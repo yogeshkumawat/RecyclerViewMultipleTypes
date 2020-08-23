@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <variable
+            name="listItem"
+            type="com.recyclerview.multipletypes.model.BaseItem" />
+
+        <import type="android.view.View" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="16dp" >
+
+        <TextView
+            android:id="@+id/provide_comment"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Provide Comment?"
+            android:textColor="#000"
+            android:textSize="16dp"
+            app:layout_constraintEnd_toStartOf="@+id/comment_switch"
+            app:layout_constraintHorizontal_chainStyle="spread_inside"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <androidx.appcompat.widget.SwitchCompat
+            android:id="@+id/comment_switch"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/provide_comment"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <EditText
+            android:id="@+id/comment_box"
+            android:layout_width="match_parent"
+            android:layout_height="96dp"
+            android:layout_marginTop="8dp"
+            android:padding="4dp"
+            android:gravity="top"
+            android:visibility="gone"
+            android:background="@drawable/comment_box_bg"
+            app:layout_constraintLeft_toLeftOf="@id/provide_comment"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/provide_comment" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

@@ -4,21 +4,34 @@ import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.recyclerview.multipletypes.databinding.ListItemBinding
+import com.recyclerview.multipletypes.databinding.CommentItemBinding
+import com.recyclerview.multipletypes.databinding.PhotoItemBinding
+import com.recyclerview.multipletypes.databinding.SingleChoiceItemBinding
 import com.recyclerview.multipletypes.model.BaseItem
 
 
 internal class MainListAdapter(
     private val context: Context
-) : RecyclerView.Adapter<ItemViewHolder>() {
+) : RecyclerView.Adapter<BaseViewHolder>() {
 
     private var listItems: ArrayList<BaseItem> = ArrayList()
 
+    companion object {
+        const val ITEM_TYPE_PHOTO = 1
+        const val ITEM_TYPE_SINGLE_CHOICE = 2
+        const val ITEM_TYPE_COMMENT = 3
+    }
 
-
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ItemViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BaseViewHolder {
         val inflater = LayoutInflater.from(context)
-        return ItemViewHolder(ListItemBinding.inflate(inflater))
+        return when (viewType) {
+            ITEM_TYPE_PHOTO -> PhotoItemViewHolder(PhotoItemBinding.inflate(inflater, parent, false))
+            ITEM_TYPE_SINGLE_CHOICE -> SingleChoiceViewHolder(
+                SingleChoiceItemBinding.inflate(inflater, parent, false)
+            )
+            ITEM_TYPE_COMMENT -> CommentItemViewHolder(CommentItemBinding.inflate(inflater, parent, false))
+            else -> PhotoItemViewHolder(PhotoItemBinding.inflate(inflater, parent, false))
+        }
     }
 
     override fun getItemCount(): Int {
@@ -26,14 +39,16 @@ internal class MainListAdapter(
     }
 
     override fun getItemViewType(position: Int): Int {
-        listItems[position].type
+        return when (listItems[position].type) {
+            "PHOTO" -> ITEM_TYPE_PHOTO
+            "SINGLE_CHOICE" -> ITEM_TYPE_SINGLE_CHOICE
+            "COMMENT" -> ITEM_TYPE_COMMENT
+            else -> ITEM_TYPE_PHOTO
+        }
     }
 
-    override fun onBindViewHolder(holder: ItemViewHolder, position: Int) {
-        with((holder)) {
-            binding.listItem = listItems[position]
-            binding.executePendingBindings()
-        }
+    override fun onBindViewHolder(holder: BaseViewHolder, position: Int) {
+        holder.bind(listItems[position])
     }
 
     fun addListItems(data: ArrayList<BaseItem>) {
@@ -46,5 +61,3 @@ internal class MainListAdapter(
         notifyItemInserted(listItems.size - 1)
     }
 }
-
-internal class ItemViewHolder(val binding: ListItemBinding) : RecyclerView.ViewHolder(binding.root)
