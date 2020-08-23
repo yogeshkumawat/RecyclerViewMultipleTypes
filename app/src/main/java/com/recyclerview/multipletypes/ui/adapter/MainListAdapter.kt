@@ -14,7 +14,7 @@ internal class MainListAdapter(
     private val context: Context
 ) : RecyclerView.Adapter<BaseViewHolder>() {
 
-    private var listItems: ArrayList<BaseItem> = ArrayList()
+    var listItems: ArrayList<BaseItem> = ArrayList()
 
     companion object {
         const val ITEM_TYPE_PHOTO = 1
@@ -48,7 +48,7 @@ internal class MainListAdapter(
     }
 
     override fun onBindViewHolder(holder: BaseViewHolder, position: Int) {
-        holder.bind(listItems[position])
+        holder.bind(position, listItems[position])
     }
 
     fun addListItems(data: ArrayList<BaseItem>) {

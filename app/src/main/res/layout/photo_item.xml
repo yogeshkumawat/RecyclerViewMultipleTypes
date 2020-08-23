@@ -35,5 +35,15 @@
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/title" />
 
+        <ImageButton
+            android:id="@+id/close_btn"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:visibility="gone"
+            android:src="@drawable/ic_blocked"
+            app:layout_constraintRight_toRightOf="@id/photo"
+            app:layout_constraintTop_toTopOf="@id/photo"
+            />
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

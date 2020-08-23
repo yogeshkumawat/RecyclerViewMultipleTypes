@@ -8,7 +8,7 @@ import com.recyclerview.multipletypes.model.BaseItem
 class SingleChoiceViewHolder(private val binding: SingleChoiceItemBinding) :
     BaseViewHolder(binding) {
 
-    override fun bind(baseItem: BaseItem) {
+    override fun bind(position: Int, baseItem: BaseItem) {
         binding.listItem = baseItem
         binding.executePendingBindings()
         binding.radioContainer.setOnCheckedChangeListener { _, i ->

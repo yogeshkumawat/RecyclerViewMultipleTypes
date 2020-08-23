@@ -7,7 +7,7 @@ import com.recyclerview.multipletypes.model.BaseItem
 
 class CommentItemViewHolder(private val binding: CommentItemBinding) : BaseViewHolder(binding) {
 
-    override fun bind(baseItem: BaseItem) {
+    override fun bind(position: Int, baseItem: BaseItem) {
         binding.listItem = baseItem
         binding.executePendingBindings()
         binding.commentSwitch.setOnCheckedChangeListener { _: CompoundButton, checked: Boolean ->

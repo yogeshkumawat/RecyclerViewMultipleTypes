@@ -6,5 +6,5 @@ import com.recyclerview.multipletypes.model.BaseItem
 
 abstract class BaseViewHolder(binding: ViewDataBinding) : RecyclerView.ViewHolder(binding.root) {
 
-    abstract fun bind(baseItem: BaseItem)
+    abstract fun bind(position: Int, baseItem: BaseItem)
 }
