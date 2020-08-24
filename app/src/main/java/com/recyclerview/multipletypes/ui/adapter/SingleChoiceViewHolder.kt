@@ -1,6 +1,5 @@
 package com.recyclerview.multipletypes.ui.adapter
 
-import android.util.Log
 import android.widget.RadioButton
 import com.recyclerview.multipletypes.databinding.SingleChoiceItemBinding
 import com.recyclerview.multipletypes.model.BaseItem
@@ -11,8 +10,8 @@ class SingleChoiceViewHolder(private val binding: SingleChoiceItemBinding) :
     override fun bind(position: Int, baseItem: BaseItem) {
         binding.listItem = baseItem
         binding.executePendingBindings()
-        binding.radioContainer.setOnCheckedChangeListener { _, i ->
-            Log.v("BOSS2", "Checked $i")
+        binding.radioContainer.setOnCheckedChangeListener { radioGroup, i ->
+            baseItem.singleChoiceSelected = radioGroup.findViewById<RadioButton>(i).text.toString()
         }
         addRadioButtons(baseItem)
     }

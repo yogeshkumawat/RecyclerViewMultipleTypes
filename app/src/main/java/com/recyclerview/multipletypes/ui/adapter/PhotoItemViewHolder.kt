@@ -12,8 +12,10 @@ class PhotoItemViewHolder(private val binding: PhotoItemBinding) : BaseViewHolde
             binding.photo.setImageBitmap(baseItem.bitmap)
             binding.closeBtn.visibility = View.VISIBLE
         }
-        else
+        else {
+            binding.photo.setImageBitmap(null)
             binding.closeBtn.visibility = View.GONE
+        }
 
         binding.executePendingBindings()
         binding.photo.setOnClickListener {

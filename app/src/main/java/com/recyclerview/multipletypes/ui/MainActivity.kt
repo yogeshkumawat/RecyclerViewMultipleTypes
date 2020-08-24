@@ -1,8 +1,11 @@
 package com.recyclerview.multipletypes.ui
 
+import android.Manifest
 import android.app.Activity
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.graphics.Bitmap
+import android.os.Build
 import android.os.Bundle
 import android.provider.MediaStore
 import android.util.Log
@@ -10,6 +13,8 @@ import android.view.Menu
 import android.view.MenuItem
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.ActivityCompat.requestPermissions
+import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil.setContentView
 import androidx.lifecycle.ViewModelProviders
 import com.recyclerview.multipletypes.R
@@ -114,8 +119,15 @@ class MainActivity : AppCompatActivity(), OnHandleCallback {
     }
 
     private fun submitData() {
-        for(item in adapter.listItems)
-            Log.v("MainActivity","Id is ${item.id}")
+        for(item in adapter.listItems) {
+            Log.v("MainActivity", "Id is ${item.id}")
+            if(item.type == "PHOTO")
+                Log.v("MainActivity", "${item.title} Bitmap is ${item.bitmap}")
+            else if(item.type == "SINGLE_CHOICE")
+                Log.v("MainActivity", "${item.title} Selected option is ${item.singleChoiceSelected}")
+            else if(item.type == "COMMENT")
+                Log.v("MainActivity", "${item.title} Provide comment?  ${item.provideComment} and Comment is ${item.comment}")
+        }
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -130,10 +142,38 @@ class MainActivity : AppCompatActivity(), OnHandleCallback {
     override fun onCallback(position: Int, baseItem: BaseItem) {
         MainActivity@ this.baseItem = baseItem
         MainActivity@ this.position = position
-        startActivityForResult(Intent(MediaStore.ACTION_IMAGE_CAPTURE), 7)
+        if(hasCameraPermission())
+            startActivityForResult(Intent(MediaStore.ACTION_IMAGE_CAPTURE), 7)
+        else
+            requestCameraPermission()
+    }
+
+    private fun requestCameraPermission() {
+        if(greaterThan23API())
+            requestPermissions(arrayOf(Manifest.permission.CAMERA), 10)
+    }
+
+    private fun greaterThan23API(): Boolean {
+        return Build.VERSION.SDK_INT >= Build.VERSION_CODES.M
+    }
+
+    private fun hasCameraPermission(): Boolean {
+        if(greaterThan23API())
+            return checkSelfPermission(Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED
+        return true
     }
 
     override fun onRemove(position: Int) {
         adapter.notifyItemChanged(position)
+    }
+
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<out String>,
+        grantResults: IntArray
+    ) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        if(requestCode == 10 && grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED)
+            startActivityForResult(Intent(MediaStore.ACTION_IMAGE_CAPTURE), 7)
     }
 }
